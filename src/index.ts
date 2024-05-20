@@ -89,7 +89,7 @@ async function main() {
         {
           role: "system",
           content:
-            'これからワインの画像を提供します。あなたの役割は、ラベルからワイン名、ヴィンテージ、生産者を抽出し、JSONフォーマットで返すことです。ワイン名と生産者は、必ず日本語で返してください。もし、ワイン名や生産者が英語やその他の言語で書かれている場合は、日本語に翻訳してから返してください。JSONの形式は以下のようにしてください: {"wines": [{"name": "ワイン名", "vintage": "ヴィンテージ", "producer": "生産者"}, ...]} JSONは、コードブロックやバッククォートで囲まないでください。',
+            'これからワインの画像を提供します。あなたの役割は、ラベルからワイン名、ヴィンテージ、生産者を抽出し、JSONフォーマットで返すことです。ワイン名と生産者は、必ず日本語で返してください。もし、ワイン名や生産者が英語やその他の言語で書かれている場合は、日本語に翻訳してから返してください。JSONの形式は以下のようにしてください: {"wines": [{"name": "ワイン名", "vintage": "ヴィンテージ", "producer": "生産者"}, ...]}',
         },
         {
           role: "user",
@@ -104,12 +104,16 @@ async function main() {
         },
       ],
       model: "gpt-4o-2024-05-13",
-      max_tokens: 1500,
+      response_format: { type: "json_object" },
       temperature: 0.3,
       top_p: 0.95,
       n: 10,
     })
-    .then(({ choices: [res] }) => {
+    .then(({ choices: [res], usage }) => {
+      if (usage) {
+        console.info("Chat completion usage:", usage)
+      }
+
       if (!res || !res.message.content) {
         throw new Error("No response.")
       }
