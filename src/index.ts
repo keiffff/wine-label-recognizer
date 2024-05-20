@@ -61,11 +61,7 @@ const openai = new OpenAI()
 async function readImageFile(filePath: string) {
   const baseDir = dirname(fileURLToPath(import.meta.url))
 
-  const base64Image = await readFile(join(baseDir, filePath)).then((file) =>
-    file.toString("base64"),
-  )
-
-  return base64Image
+  return await readFile(join(baseDir, filePath))
 }
 
 function validateContent(content: unknown) {
@@ -83,7 +79,9 @@ function validateContent(content: unknown) {
 }
 
 async function main() {
-  const base64Image = await readImageFile("/samples/IMG_1.jpg")
+  const base64Image = await readImageFile("/samples/IMG_1.jpg").then((file) =>
+    file.toString("base64"),
+  )
 
   const { wines } = await openai.chat.completions
     .create({
