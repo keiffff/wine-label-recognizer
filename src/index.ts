@@ -1,5 +1,5 @@
-import { readFile, writeFile } from "node:fs/promises"
-import { dirname, join } from "node:path"
+import { readFile, readdir, writeFile } from "node:fs/promises"
+import { dirname, join, relative } from "node:path"
 import { fileURLToPath } from "node:url"
 import OpenAI from "openai"
 import { z } from "zod"
@@ -30,9 +30,16 @@ function validateContent(content: unknown) {
 }
 
 async function main() {
-  const paths = [...Array(4).keys()].map((i) => `/inputs/IMG_${i + 1}.jpg`)
+  const inputsDir = join(dirname(fileURLToPath(import.meta.url)), "/inputs")
 
-  for (const [i, path] of paths.entries()) {
+  const filePaths = await readdir(inputsDir).then((fileNames) =>
+    fileNames.map(
+      (fileName) =>
+        `/${relative(dirname(inputsDir), join(inputsDir, fileName))}`,
+    ),
+  )
+
+  for (const [i, path] of filePaths.entries()) {
     const base64Image = await readImageFile(path).then((file) =>
       file.toString("base64"),
     )
