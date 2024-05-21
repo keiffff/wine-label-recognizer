@@ -6,58 +6,6 @@ import { z } from "zod"
 
 const openai = new OpenAI()
 
-// IMG_1
-// [
-//   {
-//     "name": "ジュヴレ・シャンベルタン クロ・サン・ジャック",
-//     "vintage": "2010",
-//     "producer": "ルイ・ジャド"
-//   },
-//   {
-//     "name": "ヴォーヌ・ロマネ レ・ショーム",
-//     "vintage": "2021",
-//     "producer": "ドメーヌ・メオ・カミュゼ"
-//   },
-//   {
-//     "name": "シャンボール・ミュジニー レ・モンビエ",
-//     "vintage": "2018",
-//     "producer": "ドメーヌ・ロベール・シルグ"
-//   }
-// ]
-//
-// IMG_2
-// [
-//   {
-//     "name": "ブルゴーニュ・パストゥグラン",
-//     "vintage": "2021",
-//     "producer": "エマニュエル・ルジェ"
-//   },
-//   {
-//     "name": "シャルドネ",
-//     "vintage": "2021",
-//     "producer": "ワイングート・ブリュンドルマイヤー"
-//   },
-//   {
-//     "name": "ソミュール",
-//     "vintage": "2021",
-//     "producer": "ドメーヌ・ギベルトー"
-//   }
-// ]
-//
-// IMG_3
-// [
-//   {
-//     "name": "ピュリニー・モンラッシェ",
-//     "vintage": "2014",
-//     "producer": "エティエンヌ・ソゼ"
-//   },
-//   {
-//     "name": "ピュリニー・モンラッシェ",
-//     "vintage": "2014",
-//     "producer": "ドメーヌ・ルフレーヴ"
-//   }
-// ]
-
 async function readImageFile(filePath: string) {
   const baseDir = dirname(fileURLToPath(import.meta.url))
 
@@ -70,8 +18,11 @@ function validateContent(content: unknown) {
       wines: z.array(
         z.object({
           name: z.string(),
+          name_ja: z.string(),
           vintage: z.string(),
           producer: z.string(),
+          producer_ja: z.string(),
+          volume: z.string(),
         }),
       ),
     })
@@ -89,7 +40,7 @@ async function main() {
         {
           role: "system",
           content:
-            'これからワインの画像を提供します。あなたの役割は、ラベルからワイン名、ヴィンテージ、生産者を抽出し、JSONフォーマットで返すことです。ワイン名と生産者は、必ず日本語で返してください。もし、ワイン名や生産者が英語やその他の言語で書かれている場合は、日本語に翻訳してから返してください。JSONの形式は以下のようにしてください: {"wines": [{"name": "ワイン名", "vintage": "ヴィンテージ", "producer": "生産者"}, ...]}',
+            'これからワイン画像を提供します。ラベルからワイン名、生産者、ヴィンテージ、容量を抽出し、JSONで返してください。ヴィンテージがある場合は、ワイン名に生産者とヴィンテージを含め、"生産者 ワイン名 ヴィンテージ" の形式で日本語と原語の両方を返してください。ヴィンテージがない場合は、ワイン名に生産者のみを含め、"生産者 ワイン名" の形式で返してください。容量が750ml以外の場合、ワイン名に "ハーフ" や "マグナム" 等の表記を追加してください。生産者名も日本語と原語の両方を返してください。ヴィンテージがある場合はヴィンテージを、ない場合は "N.V." を返してください。容量は別途 "volume" フィールドに記載してください。JSONフォーマット: {"wines": [{"name": "原語のワイン名（容量表記を含む）", "name_ja": "日本語のワイン名（容量表記を含む）", "vintage": "ヴィンテージ または N.V.", "producer": "原語の生産者名", "producer_ja": "日本語の生産者名", "volume": "容量"}, ...]}',
         },
         {
           role: "user",
@@ -123,7 +74,8 @@ async function main() {
       )
 
       if (!success) {
-        throw new Error("Invalid response.", error)
+        console.error("Invalid response. error:", error)
+        throw new Error("Invalid response.")
       }
 
       return data
