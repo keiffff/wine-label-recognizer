@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Louis Roederer Champagne Vintage 1996 Magnum",
+    "name_ja": "ルイ・ロデレール シャンパーニュ ヴィンテージ 1996 マグナム",
+    "vintage": "1996",
+    "producer": "Louis Roederer",
+    "producer_ja": "ルイ・ロデレール",
+    "volume": "1500ml"
+  },
+  {
+    "name": "Louis Roederer Champagne Vintage 1996",
+    "name_ja": "ルイ・ロデレール シャンパーニュ ヴィンテージ 1996",
+    "vintage": "1996",
+    "producer": "Louis Roederer",
+    "producer_ja": "ルイ・ロデレール",
+    "volume": "750ml"
+  }
+]

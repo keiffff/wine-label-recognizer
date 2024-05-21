@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Louis Jadot Gevrey-Chambertin Clos Saint-Jacques 2010",
+    "name_ja": "ルイ・ジャド ジュヴレ・シャンベルタン クロ・サン・ジャック 2010",
+    "vintage": "2010",
+    "producer": "Louis Jadot",
+    "producer_ja": "ルイ・ジャド",
+    "volume": "750ml"
+  },
+  {
+    "name": "Domaine Méo-Camuzet Vosne-Romanée Les Chaumes 2021",
+    "name_ja": "ドメーヌ・メオ・カミュゼ ヴォーヌ・ロマネ レ・ショーム 2021",
+    "vintage": "2021",
+    "producer": "Domaine Méo-Camuzet",
+    "producer_ja": "ドメーヌ・メオ・カミュゼ",
+    "volume": "750ml"
+  },
+  {
+    "name": "Domaine Robert Sirugue Chambolle-Musigny Les Mombies 2018",
+    "name_ja": "ドメーヌ・ロベール・シリュグ シャンボール・ミュジニー レ・モンビエ 2018",
+    "vintage": "2018",
+    "producer": "Domaine Robert Sirugue",
+    "producer_ja": "ドメーヌ・ロベール・シリュグ",
+    "volume": "750ml"
+  }
+]
